@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualito or Naaaaaaah?</title>
+    
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2CB5A9">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Visualito">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #D2D2D2;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            border: 3px solid #2CB5A9;
+        }
+        
+        h1 {
+            color: #EF6343;
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #2CB5A9;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #2CB5A9;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-family: 'Poppins', sans-serif;
+            background: #f9f9f9;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #93D930;
+            background: white;
+        }
+        
+        .check-button {
+            background-color: #93D930;
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(147, 217, 48, 0.3);
+        }
+        
+        .check-button:hover {
+            background-color: white;
+            color: #93D930;
+            border: 3px solid #DA3B9B;
+            transform: translateY(-2px);
+        }
+        
+        .check-button:active {
+            transform: translateY(0px);
+        }
+        
+        .install-button {
+            background: linear-gradient(45deg, #DA3B9B, #EF6343);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        
+        .install-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(218, 59, 155, 0.3);
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.show {
+            display: block;
+        }
+        
+        .success-title {
+            color: #EF6343;
+            font-size: 2.3em;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+        
+        .checkbox-container {
+            background: linear-gradient(135deg, #2CB5A9, #93D930);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .squad-checkbox {
+            width: 25px;
+            height: 25px;
+        }
+        
+        .checkbox-label {
+            color: white;
+            font-size: 1.3em;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .failure-title {
+            color: #EF6343;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+        
+        .failure-message {
+            color: #DA3B9B;
+            font-size: 1.3em;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        
+        .back-button {
+            background: linear-gradient(45deg, #2CB5A9, #93D930);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(44, 181, 169, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="installButton" class="install-button">📱 Installer l'App</button>
+        
+        <div id="formPage" class="page show">
+            <h1>Visualito or Naaaaaaah?</h1>
+            <p class="subtitle">Visuality Squad Check</p>
+            
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" placeholder="Enter your first name">
+            </div>
+            
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" placeholder="Enter your last name">
+            </div>
+            
+            <button class="check-button" onclick="checkSquadStatus()">Check Squad Status</button>
+        </div>
+        
+        <div id="visualitoPage" class="page">
+            <h1 class="success-title">Welcome to Visualito!</h1>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="squadCheck" class="squad-checkbox" checked disabled>
+                <label for="squadCheck" class="checkbox-label">Visualito Squad Member</label>
+            </div>
+            
+            <button class="back-button" onclick="goBack()">Check Another Name</button>
+        </div>
+        
+        <div id="failurePage" class="page">
+            <h1 class="failure-title">I bet you wish you were a Visualito!</h1>
+            
+            <p class="failure-message">
+                Nice try, but you're not part of our exclusive visual squad! 🎨<br><br>
+                Keep creating and maybe one day you'll join the Visualito crew! ✨
+            </p>
+            
+            <button class="back-button" onclick="goBack()">Try Another Name</button>
+        </div>
+        
+        <div id="elonPage" class="page">
+            <h1 class="failure-title">Tesla Confession Time! 🚗</h1>
+            
+            <p class="failure-message">
+                It's ok Mara, we know you bought your Tesla before you knew Elon was crazy
+            </p>
+            
+            <button class="back-button" onclick="goBack()">Try Another Name</button>
+        </div>
+        
+        <div id="jimPage" class="page">
+            <h1 class="failure-title">Collaborator Alert! 🤝</h1>
+            
+            <p class="failure-message">
+                Nice try ! But "Jimmy Jim" is a calloborator and not a Visualito.
+            </p>
+            
+            <button class="back-button" onclick="goBack()">Try Another Name</button>
+        </div>
+    </div>
+
+    <script>
+        const squadMembers = [
+            "Pauline Vidal",
+            "Mara Callaert", 
+            "Sven Retoré",
+            "Joyce Van Kerckhove",
+            "Maria Foulquié",
+            "Ela Jakubek-Grootjans",
+            "Teresa Vetter"
+        ];
+
+        function checkSquadStatus() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            
+            if (!firstName || !lastName) {
+                alert('Please enter both first name and last name!');
+                return;
+            }
+            
+            const fullName = firstName + ' ' + lastName;
+            
+            if (fullName.toLowerCase() === 'elon musk') {
+                showPage('elon');
+                return;
+            }
+            
+            if (fullName.toLowerCase() === 'jim tamm') {
+                showPage('jim');
+                return;
+            }
+            
+            const isInSquad = squadMembers.some(member => 
+                member.toLowerCase() === fullName.toLowerCase()
+            );
+            
+            if (isInSquad) {
+                showPage('visualito');
+            } else {
+                showPage('failure');
+            }
+        }
+
+        function showPage(pageName) {
+            document.getElementById('formPage').classList.remove('show');
+            document.getElementById('visualitoPage').classList.remove('show');
+            document.getElementById('failurePage').classList.remove('show');
+            document.getElementById('elonPage').classList.remove('show');
+            document.getElementById('jimPage').classList.remove('show');
+            
+            if (pageName === 'visualito') {
+                document.getElementById('visualitoPage').classList.add('show');
+            } else if (pageName === 'failure') {
+                document.getElementById('failurePage').classList.add('show');
+            } else if (pageName === 'elon') {
+                document.getElementById('elonPage').classList.add('show');
+            } else if (pageName === 'jim') {
+                document.getElementById('jimPage').classList.add('show');
+            }
+        }
+
+        function goBack() {
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+            
+            document.getElementById('formPage').classList.add('show');
+            document.getElementById('visualitoPage').classList.remove('show');
+            document.getElementById('failurePage').classList.remove('show');
+            document.getElementById('elonPage').classList.remove('show');
+            document.getElementById('jimPage').classList.remove('show');
+        }
+
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const formPage = document.getElementById('formPage');
+                if (formPage.classList.contains('show')) {
+                    checkSquadStatus();
+                }
+            }
+        });
+
+        // PWA Installation Logic
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.style.display = 'inline-block';
+        });
+
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                installButton.style.display = 'none';
+            }
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
